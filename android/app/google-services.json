@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "753767600982",
+    "project_id": "sipra-sample-project",
+    "storage_bucket": "sipra-sample-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753767600982:android:d2ecde9e85abcf8ec2bcf7",
+        "android_client_info": {
+          "package_name": "com.firebaseproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753767600982-4ns5bftp9r06v3ul2fgdhc2galcd5qvr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.firebaseproject",
+            "certificate_hash": "c59b92be400f2015ae2d1f9574c7ec2feef83693"
+          }
+        },
+        {
+          "client_id": "753767600982-6sos3d00q9cnvij7td9asa1hksr9hn3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvCkT8vKHDv3TLp16RZtbdk0TFvUhOc7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753767600982-6sos3d00q9cnvij7td9asa1hksr9hn3b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
