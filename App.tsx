@@ -1,99 +1,72 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import {useEffect, useState} from 'react';
 import {
-  SafeAreaView,
+  Alert,
+  Button,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
+  TextInput,
+  Touchable,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+function App() {
+  const [LoggedIn, SetLoggedIn] = useState(false);
+  const [HasAccount, SetHasAccount] = useState(false);
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const HandleLogIn = (em: string,pass: string) => {
+    SetHasAccount(true)
+    auth().signInWithEmailAndPassword(em,pass).then(()=>{
+      Alert.alert('Succesfully Logged In!')
+      SetLoggedIn(true);
+    }).catch(error => {
+      Alert.alert(error.code)
+    })
+  }
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  const HandleSignUp = (em: string,pass: string) => {
+    SetHasAccount(false)
+    auth()
+  .createUserWithEmailAndPassword(em, pass)
+  .then(() => {
+    Alert.alert('User account created & signed in!');
+    SetLoggedIn(true)
+  })
+  .catch(error => {
+    if (error.code === 'auth/email-already-in-use') {
+      Alert.alert('That email address is already in use!');
+    }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+    if (error.code === 'auth/invalid-email') {
+      Alert.alert('That email address is invalid!');
+    }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    Alert.alert(error.code);
+  });
+  }
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  // useEffect(()=>{
+  //   if (auth().currentUser){
+  //     SetLoggedIn(true)
+  //   }else {
+  //     SetLoggedIn(false)
+  //   }
+  // })
+  //sanghaitra@gmail.com = ABcd123==
+  return (<View>
+    { LoggedIn ? <View>
+      <Text>Logged In</Text>
+      <Button title='Log Out' onPress={()=> SetLoggedIn(false)} />
+       </View> : <View>
+      {HasAccount? <SignIn login={HandleLogIn} signup={()=> SetHasAccount(false)} /> :
+      <SignUp login={()=> SetHasAccount(true)} signup={HandleSignUp}/>}</View>}
+  </View>);
 }
 
 const styles = StyleSheet.create({
